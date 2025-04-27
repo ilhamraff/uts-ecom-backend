@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Private EC2 via Bastion Host
         run: |
-          ssh -o StrictHostKeyChecking=no -J ec2-user@ec2-54-255-249-207.ap-southeast-1.compute.amazonaws.com ec2-user@192.168.2.184 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -J ec2-user@54-255-249-207 ec2-user@192.168.2.184 << 'EOF'
             cd /home/ec2-user/uts-ecom-backend
             sudo git pull origin master
             sudo pm2 restart all
