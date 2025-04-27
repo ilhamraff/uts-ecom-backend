@@ -1,0 +1,30 @@
+name: Deploy to Private EC2 via Bastion Host
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Private EC2 via Bastion Host
+        run: |
+          ssh -o StrictHostKeyChecking=no -J ec2-user@ec2-54-255-249-207.ap-southeast-1.compute.amazonaws.com ec2-user@192.168.2.184 << 'EOF'
+            cd /home/ec2-user/my-node-app
+            sudo git pull origin master
+            sudo pm2 restart all
+            sudo pm2 save
+          EOF
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
