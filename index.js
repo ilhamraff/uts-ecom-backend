@@ -15,12 +15,12 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-app.get("/products", async (req, res) => {
+app.get("/api/products", async (req, res) => {
   const products = await prisma.product.findMany();
   res.json(products);
 });
 
-app.post("/products", async (req, res) => {
+app.post("/api/products", async (req, res) => {
   const { name, price, imageUrl } = req.body;
 
   if (!name || !price || !imageUrl) {
